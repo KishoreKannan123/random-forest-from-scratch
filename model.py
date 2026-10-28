@@ -36,8 +36,34 @@ def split_score(parent_labels, left_labels, right_labels):
     # TODO: return a score where higher means the children are purer than the parent.
     return impurity(parent_labels) - (left_labels.size*impurity(left_labels)+right_labels.size*impurity(right_labels))/parent_labels.size
 
-# Step 4 - best_split (not yet solved)
-# TODO: implement
+# Step 4 - best_split
+import numpy as np
+
+def best_split(features, labels, feature_indices):
+    best_feature_index = None
+    best_threshold = None
+    best_score = 0 # Safer initialization for maximization
+
+    # Loop through the passed feature_indices instead of all columns
+    for i in feature_indices:
+        vals = np.unique(features[:, i])
+        
+        # Skip if there are fewer than 2 unique values to split on
+        if len(vals) < 2:
+            continue
+            
+        thresholds = (vals[:-1] + vals[1:]) / 2
+        
+        for j in thresholds:
+            lx, ly, rx, ry = split_dataset(features, labels, i, j)
+            score = split_score(labels, ly, ry)
+            
+            if score > best_score:
+                best_feature_index = i
+                best_threshold = j
+                best_score = score
+    
+    return {'feature_index':best_feature_index,'threshold':best_threshold,"score":best_score}
 
 # Step 5 - should_stop (not yet solved)
 # TODO: implement
