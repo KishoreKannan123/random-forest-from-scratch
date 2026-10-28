@@ -16,8 +16,20 @@ def impurity(labels):
     unique_values,counts = np.unique(labels,return_counts = True)
     return 1 - np.sum((counts/np.sum(counts))**2)
 
-# Step 2 - split_dataset (not yet solved)
-# TODO: implement
+# Step 2 - split_dataset
+import numpy as np
+
+def split_dataset(features, labels, feature_index, threshold):
+    # Create boolean masks directly
+    left_mask = features[:, feature_index] <= threshold
+    right_mask = features[:, feature_index] > threshold
+
+    lx = features[left_mask]
+    rx = features[right_mask]
+    ly = labels[left_mask]
+    ry = labels[right_mask]
+
+    return lx, ly, rx, ry
 
 # Step 3 - split_score (not yet solved)
 # TODO: implement
