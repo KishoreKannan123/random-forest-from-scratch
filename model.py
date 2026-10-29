@@ -154,12 +154,13 @@ def combine_predictions(tree_predictions):
     return np.array(predictions).astype(np.int64)
 
 # Step 14 - predict_forest
+# ── Step 014  predict_forest ──
 def predict_forest(forest, features):
-    # TODO: predict classes for a dataset using the whole trained forest.
+    """Predict classes for a dataset using the whole trained forest."""
     predictions = []
-    for i in range(len(forest)):
-        print(i)
-        pred = predict_tree(forest[i]['tree'],features[:,forest[i]['feature_indices']])
+    for tree_dict in forest:
+        # Pass the full feature matrix because tree node indices refer to original column indices
+        pred = predict_tree(tree_dict['tree'], features)
         predictions.append(pred)
     return combine_predictions(np.array(predictions))
 
