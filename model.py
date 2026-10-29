@@ -79,8 +79,14 @@ def leaf_prediction(labels):
     values,counts = np.unique(labels,return_counts = True)
     return int(values[np.argmax(counts)])
 
-# Step 7 - build_tree (not yet solved)
-# TODO: implement
+# Step 7 - build_tree
+def build_tree(features, labels, max_depth=10, min_samples_split=2, feature_subset=None, depth=0):
+    # TODO: recursively grow a decision tree, returning a nested dict of leaf/internal nodes.
+    if(should_stop(labels, depth, max_depth, min_samples_split)):
+        return {'leaf':True,'prediction':leaf_prediction(labels)}
+    d = best_split(features,labels,range(features.shape[1]) if(feature_subset is None) else feature_subset)
+    lx,ly,rx,ry = split_dataset(features,labels,d['feature_index'],d['threshold'])
+    return {'leaf':False,'feature_index':d['feature_index'],'threshold':d['threshold'],'left':build_tree(lx,ly,max_depth,min_samples_split,feature_subset,depth+1),'right':build_tree(rx,ry,max_depth,min_samples_split,feature_subset,depth+1)}
 
 # Step 8 - predict_example_tree (not yet solved)
 # TODO: implement
